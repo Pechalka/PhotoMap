@@ -4,7 +4,12 @@
 }
 @section head
 {
+@*<script type="text/javascript" src="http://maps.google.com/maps?file=api&v=2&key=<?=GOOGLE_MAPS_API_KEY?>"></script>*@
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js"></script>
+<script src="http://www.google.com/uds/api?file=uds.js&v=1.0&key=" type="text/javascript"></script>
+
+
     <script type="text/javascript">
         function showAddForm() {
             $('#no-image').show();
@@ -56,10 +61,55 @@
             $('input[id=lefile]').change(function () {
                 $('#photoCover').val($(this).val());
             });
+            //            $('#txtQuickJump').change(function () {
+            //                var t = $(this).val();
+            //                alert(t);
+            //                return false;
+            //            });
+
+            $('#formQuickJumpForm').submit(function () {
+                debugger;
+                var t = $('#txtQuickJumpForm').val();
+                var rest = search(t);
+
+                debugger;
+
+                $('#txtQuickJumpForm').val('');
+                return false;
+            });
         });
         
+        
+        
+        function search(value) {
+            var geocoder = new GClientGeocoder();
+            geocoder.setBaseCountryCode("en");
+            if (value != null) {
+                geocoder.getLatLng(value, function(point) {
+                    if (!point) {
+                        //ничего не найдено
+                        alert("We couldn't find anything. Please try another search request");
+                    } else {
+                        geocoder.getLocations(point, function(response) {
+                            if (!response || response.Status.code != 200) {
+                                //ничего не найдено
+                                alert("We couldn't find anything. Please try another search request");
+                            } else {
+                                var data = {
+                                    latitude: point.lat(),
+                                    longitude: point.lng(),
+                                    search: value
+                                };
+                            }
+                        });
+                    }
+                });
+                return data;
+            }
+        }
+        
     </script>
-}
+
 <div class="container-fluid">
 @*    <div class="navbar">
         <div class="navbar-inner">
@@ -92,8 +142,8 @@
                                 
                                 <li class="divider-vertical"></li>*@
                                 <li>
-                                    <form style="height:34px;" class="navbar-search" action="/search/" method="get">
-                                        <input type="text" class="search-query" placeholder="quick jump" name="q" value=""/>
+                                    <form style="height:34px;" class="navbar-search" id="formQuickJumpForm" action="" method="get">
+                                        <input type="text" class="search-query" id="txtQuickJumpForm" placeholder="quick jump" name="q" value=""/>
                                     </form>
                                 </li>
 							
