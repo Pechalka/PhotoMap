@@ -7,13 +7,13 @@
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript">
         function showAddForm() {
-            $('form').show();
-            $('ul.thumbnails').hide();
+            $('#no-image').show();
+            $('#select-image').hide();
         }
 
         function showImages() {
-            $('form').hide();
-            $('ul.thumbnails').show();
+            $('#no-image').hide();
+            $('#select-image').show();
         }
         function initialize() {
             var myLatlng = new google.maps.LatLng(-34.397, 150.644);
@@ -53,52 +53,137 @@
 
         $(function () {
             initialize();
+            $('input[id=lefile]').change(function () {
+                $('#photoCover').val($(this).val());
+            });
         });
+        
     </script>
 }
 <div class="container-fluid">
-    <div class="navbar">
-  <div class="navbar-inner">
-    <a class="brand" href="#">Photo Map</a>
-    <ul class="nav">
-      <li class="active"><a href="#">Map</a></li>
-      <li><a href="#">Profile</a></li>
-      <li><a href="#">Users</a></li>
-    </ul>
-  </div>
-</div>
-    <div class="row-fluid">
-        <div class="span9">
-            <div id="map_canvas" style="height: 800px">
-                
-            </div>
-        </div>
-        <div class="span3">
-            <form>
-                <input type="submit" class="btn" value="Add"/>
-            </form>
-            <ul class="thumbnails   ">
-                <li>
-                    <a href="#" class="thumbnail">
-                        <img src="http://placehold.it/260x180" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="thumbnail">
-                        <img src="http://placehold.it/260x180" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="thumbnail">
-                        <img src="http://placehold.it/260x180" alt="">
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="thumbnail">
-                        <img src="http://placehold.it/260x180" alt="">
-                    </a>
-                </li>
+@*    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">Photo Map</a>
+            <ul class="nav">
+                <li class="active"><a href="#">Map</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Users</a></li>
             </ul>
         </div>
+    </div>*@
+    
+    <div class="navbar">
+				<div class="navbar-inner">
+					<div class="container">
+						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</a>
+
+						<div class="nav-collapse">
+                            <ul class="nav">
+                                
+                                <li><a class="brand" href="#">Photo Map</a></li>
+                                <li class="divider-vertical"></li>
+                                @*<li><a href="">Users</a></li>
+								
+								
+                                
+                                <li class="divider-vertical"></li>*@
+                                <li>
+                                    <form style="height:34px;" class="navbar-search" action="/search/" method="get">
+                                        <input type="text" class="search-query" placeholder="quick jump" name="q" value=""/>
+                                    </form>
+                                </li>
+							
+                            </ul>
+
+							<ul class="nav pull-right">
+								<li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Profile <b class="caret"></b></a><ul class="dropdown-menu"><li class=""><a href="/game">Games</a></li><li class=""><a href="/chat">Play Together</a></li><li class=""><a href="/rom">Roms</a></li><li class=""><a href="/walk">Walkthroughs</a></li><li class=""><a href="/user">Players</a></li><li class="divider"></li><li class=""><a href="/letter">Letters</a></li></ul></li>
+								<li class="divider-vertical"></li>
+								<li class="active"><a title="English" href="/" id="en-locale"><img src="/images/us.png"></a></li>
+								<li><a title="Русский" href="/ru" id="ru-locale"><img src="/images/rus.png"></a></li>
+							</ul>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+
+    <div class="row-fluid">
+    <div class="span10">
+        <div id="map_canvas" style="height: 800px">
+        </div>
+    </div>
+    <div class="span2">
+@*        <form action="" class="well">
+            <label>quick jump</label>
+            <div class="input-append">
+                <input class="input-medium" id="appendedInputButton" size="16" type="text" />
+                <button class="btn" type="button">Go!</button>
+            </div>
+            <label class="checkbox">
+                <input type="checkbox" value="" checked="checked">
+                Only my places
+            </label>
+        </form>*@
+        <div id="no-image" class="well" style="display: none">
+            <form action="">
+                <label>
+                    Address</label>
+                <textarea rows="3"></textarea>
+                <label>
+                    Description</label>
+                <textarea rows="3"></textarea><br />
+                <input type="submit" class="btn" value="Save Place" />
+            </form>
+        </div>
+        <div id="select-image" class="well">
+            <ul class="thumbnails">
+                <li><a href="#" class="thumbnail">
+                        <img src="http://placehold.it/260x180" alt="">
+                    </a></li>
+                <li><a href="#" class="thumbnail">
+                        <img src="http://placehold.it/260x180" alt="">
+                    </a></li>
+                <li><a href="#" class="thumbnail">
+                        <img src="http://placehold.it/260x180" alt="">
+                    </a></li>
+            </ul>
+            <a class="btn btn-inverse pull-right" data-toggle="modal" role="button" href="#myModal">
+                <i class="icon-white icon-plus-sign"></i>Add Image</a> 
+            <div class="clearfix"/>
+            @* <form action="" class="form-inline well">
+               @* <form action="" class="form-inline well">
+                    <input id="lefile" type="file" style="display: none"/>
+                    <div class="input-append">
+                        <input id="photoCover" class="input-small" type="text"/>
+                        <a class="btn" onclick="$('input[id=lefile]').click();">Browse</a>
+                    </div>
+                    <input type="submit" class="btn" value="Add" />
+                </form>*@
+            
+        </div>
+    </div>
+</div>
+</div>
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×</button>
+        <h3 id="myModalLabel">
+            Modal header</h3>
+    </div>
+    <div class="modal-body">
+        <p>
+            One fine body…</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">
+            Close</button>
+        <button class="btn btn-primary">
+            Save changes</button>
     </div>
 </div>
